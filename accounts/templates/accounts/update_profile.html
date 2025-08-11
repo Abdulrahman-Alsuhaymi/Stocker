@@ -1,0 +1,62 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Update {{request.user.username}}{% endblock %}
+
+{% block content %}
+
+<div class="container d-flex flex-column justify-content-center align-items-center">
+
+    <h2>Update Profile</h2>
+    
+    <form class="d-flex flex-column gap-3 w-50" action="{% url 'accounts:update_user_profile' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-floating">
+          <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email" required value="{{request.user.email}}">
+          <label for="floatingInput">Email address</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="First name" name="first_name" required value="{{request.user.first_name}}">
+            <label for="floatingInput">First name</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Last name" name="last_name" required value="{{request.user.last_name}}">
+            <label for="floatingInput">Last name</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Phone" name="phone" value="{{request.user.profile.phone}}">
+            <label for="floatingInput">Phone</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Department" name="department" value="{{request.user.profile.department}}">
+            <label for="floatingInput">Department</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Position" name="position" value="{{request.user.profile.position}}">
+            <label for="floatingInput">Position</label>
+        </div>
+
+        <div class="form-floating">
+          <input type="email" class="form-control" id="floatingInput" placeholder="Notification Email" name="notification_email" value="{{request.user.profile.notification_email}}">
+          <label for="floatingInput">Notification Email</label>
+        </div>
+        
+        <div class="d-flex align-items-center gap-2">
+            <input type="checkbox" class="form-check-input" name="is_manager" id="is_manager" {% if request.user.profile.is_manager %}checked{% endif %} />
+            <label for="is_manager">Manager</label>
+        </div>
+        
+        <h5>Choose Avatar:</h5>
+        <img src="{{request.user.profile.avatar.url}}" class="avatar rounded-4" />
+        <input type="file" name="avatar" accept="image/*" class="form-control" />
+
+        <button class="btn btn-primary w-100 py-2" type="submit">Update</button>
+    </form>
+</div>
+
+{% endblock %}

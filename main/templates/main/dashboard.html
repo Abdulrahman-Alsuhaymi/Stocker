@@ -1,0 +1,119 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Dashboard - Stocker {% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <h1>Dashboard</h1>
+        <p>Welcome to your inventory management dashboard.</p>
+    </div>
+</div>
+
+<!-- Notification Alerts -->
+{% if low_stock_count > 0 or expiring_count > 0 %}
+<div class="row mb-4">
+    <div class="col">
+        <div class="alert alert-warning" role="alert">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="alert-heading">
+                        <i class="bi bi-exclamation-triangle"></i> 
+                        Notifications Require Attention
+                    </h5>
+                    {% if low_stock_count > 0 %}
+                    <p class="mb-1"><strong>{{ low_stock_count }}</strong> product(s) have low stock</p>
+                    {% endif %}
+                    {% if expiring_count > 0 %}
+                    <p class="mb-1"><strong>{{ expiring_count }}</strong> product(s) are expiring soon</p>
+                    {% endif %}
+                </div>
+                {% if request.user.is_staff %}
+                <a href="{% url 'products:check_notifications_view' %}" class="btn btn-warning">
+                    <i class="bi bi-bell"></i> Send Notifications
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+    <div class="col">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-box-seam text-primary" style="font-size: 3rem;"></i>
+                <h5 class="card-title">Products</h5>
+                <p class="card-text">Manage your inventory products</p>
+                <a href="{% url 'products:product_list_view' %}" class="btn btn-primary">View Products</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-truck text-success" style="font-size: 3rem;"></i>
+                <h5 class="card-title">Suppliers</h5>
+                <p class="card-text">Manage your suppliers</p>
+                <a href="{% url 'suppliers:supplier_list_view' %}" class="btn btn-success">View Suppliers</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-graph-up text-info" style="font-size: 3rem;"></i>
+                <h5 class="card-title">Reports</h5>
+                <p class="card-text">View inventory reports</p>
+                <a href="{% url 'reports:reports_dashboard' %}" class="btn btn-info">View Reports</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-tags text-warning" style="font-size: 3rem;"></i>
+                <h5 class="card-title">Categories</h5>
+                <p class="card-text">Manage product categories</p>
+                <a href="{% url 'products:category_list_view' %}" class="btn btn-warning">Manage Categories</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2>All Products</h2>
+
+{% if products %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for product in products %}
+    <div class="col">
+        <div class="card h-100">
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description|truncatewords:15 }}</p>
+                <p class="card-text"><small class="text-muted">Stock: {{ product.current_stock }}</small></p>
+                <p class="card-text"><strong>${{ product.selling_price }}</strong></p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'products:product_detail_view' product.id %}" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <h4>No products available</h4>
+    <p>Start adding some products to your inventory.</p>
+    {% if request.user.is_staff %}
+    <a href="{% url 'products:product_create_view' %}" class="btn btn-primary">Add Product</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

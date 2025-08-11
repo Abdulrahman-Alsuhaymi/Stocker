@@ -1,0 +1,145 @@
+* {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+h1 {
+    font-size: 4rem;
+    
+}
+h1, h2 {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 700;
+}
+
+.navbar-brand h2 {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 700;
+}
+
+main {
+    min-height: 60vh;
+}
+
+p {
+    white-space:pre-line;
+}
+
+hr {
+    opacity: 1;
+    height: 1rem;
+    border: none;
+    background-color: rgb(230, 230, 230);
+    transform: skewX(-20deg);
+}
+
+.top-logo {
+    font-size: 2.2rem;
+    color: rgb(13, 110, 253);
+    transform: skewX(-20deg);
+    transition: all 0.2s ease-in;
+}
+
+.top-logo:hover {
+    transform: translate(5%, -5%) skewX(-20deg);
+    text-shadow: -0.2rem 0.1rem 0px rgb(13, 110, 253);
+}
+
+.hero {
+    transform: skewX(-20deg);
+    transition: all 0.3s ease-in;
+}
+
+.hero  {
+    background-color: rgb(13, 110, 253);
+    padding-left: 4rem;
+}
+
+
+
+input[type="search"]{
+    border-radius: 0px !important;
+    transform: skew(-10deg);
+}
+
+.top-nav span {
+    padding:0.2rem;
+}
+
+.top-nav .active-icon {
+    background-color: white;
+    border-radius: 50%;
+    color:black;
+}
+
+.top-nav a {
+    padding: 0px !important;
+}
+
+a {
+    color:black;
+    text-decoration: none;
+    transition: all 0.1s ease-in;
+}
+
+a:hover {
+    color:rgb(13, 110, 253);
+    transition: all 0.15s ease-out;
+}
+
+.top-nav a.active {
+    background-color: rgb(13, 110, 253) !important;
+    border-radius: 10px;
+    padding: 2px 18px !important;
+}
+
+.avatar {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+}
+
+.supplier-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.product-detail-image {
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.bi {
+    font-size: 1.4rem;
+}
+
+.card {
+    transition: all 0.2s ease-in;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.btn {
+    border-radius: 0;
+    transform: skew(-5deg);
+}
+
+.btn:hover {
+    transform: skew(-5deg) translateY(-2px);
+}
+
+@media only screen and (max-width:800px)  {
+    .hero {
+        transform: skewX(0deg);
+        transition: all 0.3s ease-in;
+    }
+}

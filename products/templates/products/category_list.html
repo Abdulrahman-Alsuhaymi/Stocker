@@ -1,0 +1,54 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Manage Categories</h1>
+    {% if can_manage %}
+    <a href="{% url 'products:category_create_view' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add New Category
+    </a>
+    {% endif %}
+</div>
+
+{% if categories %}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                {% if can_manage %}
+                <th>Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <td>{{ category.name }}</td>
+                {% if can_manage %}
+                <td>
+                    <a href="{% url 'products:category_update_view' category.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a href="{% url 'products:category_delete_view' category.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+                {% else %}
+                <td>View Only</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="text-center py-5">
+    <h4>No categories available</h4>
+    <p>Start by adding some categories to organize your products.</p>
+    {% if can_manage %}
+    <a href="{% url 'products:category_create_view' %}" class="btn btn-primary">Create First Category</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

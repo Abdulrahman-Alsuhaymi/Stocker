@@ -1,0 +1,75 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+
+<h1>Products</h1>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <a href="{% url 'products:category_list_view' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-tags"></i> Manage Categories
+        </a>
+    </div>
+    <div class="d-flex gap-2">
+        {% if request.user.is_staff %}
+        <a href="{% url 'products:import_products_csv' %}" class="btn btn-outline-info">
+            <i class="fas fa-upload"></i> Import CSV
+        </a>
+        <a href="{% url 'products:export_products_csv' %}" class="btn btn-outline-success">
+            <i class="fas fa-download"></i> Export CSV
+        </a>
+        {% endif %}
+        {% if request.user.is_staff and perms.products.add_product %}
+        <a href="{% url 'products:product_create_view' %}" class="btn btn-primary">Add Product</a>
+        {% endif %}
+    </div>
+</div>
+
+{% if products %}
+    {% include 'products/product_list_items.html' %}
+
+    <!-- Pagination -->
+    {% if products.has_other_pages %}
+    <div class="pagination d-flex justify-content-center align-items-center mt-5 gap-4">
+        {% if products.has_previous %}
+            <div class="d-flex gap-1">
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ products.previous_page_number }}">&laquo; previous</a>
+            </div>
+        {% endif %}
+
+        <div class="current">
+            Page {{ products.number }} of {{ products.paginator.num_pages }}
+        </div>
+
+        <div class="d-flex gap-2">
+            {% for page in products.paginator.page_range %}
+                {% if page == products.number %}
+                <a href="#" class="p-3 bg-primary rounded-4 text-white disabled">{{page}}</a>
+                {% else %}
+                <a href="?page={{ page }}" class="p-3 bg-secondary rounded-4 text-white">{{page}}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if products.has_next %}
+            <div class="d-flex gap-1">
+                <a href="?page={{ products.next_page_number }}">next &raquo;</a>
+                <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+{% else %}
+    <div class="bg-warning p-3 rounded">
+        <p>No products found. Get started by adding your first product.</p>
+        {% if request.user.is_staff and perms.products.add_product %}
+        <a href="{% url 'products:product_create_view' %}" class="btn btn-primary">Add First Product</a>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% endblock %}

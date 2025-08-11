@@ -1,0 +1,48 @@
+<div class="row mt-2 row-cols-1 row-cols-md-3 g-4">
+
+    {% for supplier in suppliers %}
+      <div class="col">
+          <div class="d-flex flex-column justify-content-start align-items-start h-100 p-4 shadow gap-2">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center gap-1">
+                    <img src="{{ supplier.logo.url }}" class="supplier-logo" />
+                </div>
+                <div class="d-flex align-items-center">
+                    {% if supplier.is_active %}
+                    <span class="badge bg-success">Active</span>
+                    {% else %}
+                    <span class="badge bg-secondary">Inactive</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <a href="{% url 'suppliers:supplier_detail_view' supplier.id %}"><h3>{{ supplier.name }}</h3></a>
+                <div class="d-flex align-items-center gap-1">
+                    <span class="material-symbols-outlined">star</span>
+                    <h5 class="m-0 p-0">{{ supplier.rating }}</h5>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center gap-1">
+                    {% if supplier.email %}
+                    <h6 class="m-0 p-0">{{ supplier.email }}</h6>
+                    {% endif %}
+                </div>
+                <h6 class="m-0 p-0">{{ supplier.created_at|date:"M d, Y" }}</h6>
+            </div>
+
+            {% if supplier.phone %}
+            <p class="text-muted small">{{ supplier.phone }}</p>
+            {% endif %}
+
+            {% if supplier.country %}
+            <p class="text-muted small">{{ supplier.country }}</p>
+            {% endif %}
+
+          </div>
+      </div>
+    {% endfor %}
+  
+</div>

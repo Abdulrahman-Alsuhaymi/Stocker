@@ -1,0 +1,68 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Reports Dashboard{% endblock %}
+
+{% block content %}
+
+<h1>Reports Dashboard</h1>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card text-center p-4 shadow">
+            <div class="card-body">
+                <h2 class="card-title">{{ total_products }}</h2>
+                <p class="card-text">Total Products</p>
+                <a href="{% url 'reports:inventory_report' %}" class="btn btn-primary">View Inventory</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card text-center p-4 shadow">
+            <div class="card-body">
+                <h2 class="card-title">{{ total_suppliers }}</h2>
+                <p class="card-text">Total Suppliers</p>
+                <a href="{% url 'reports:supplier_report' %}" class="btn btn-primary">View Suppliers</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card text-center p-4 shadow">
+            <div class="card-body">
+                <h2 class="card-title">{{ total_categories }}</h2>
+                <p class="card-text">Total Categories</p>
+                <a href="{% url 'products:product_list_view' %}" class="btn btn-primary">View Products</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card p-4 shadow">
+            <div class="card-body">
+                <h3 class="card-title">Quick Reports</h3>
+                <div class="d-flex flex-column gap-2">
+                    <a href="{% url 'reports:low_stock_report' %}" class="btn btn-warning">Low Stock Report</a>
+                    <a href="{% url 'reports:expiring_products_report' %}" class="btn btn-danger">Expiring Products</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card p-4 shadow">
+            <div class="card-body">
+                <h3 class="card-title">Navigation</h3>
+                <div class="d-flex flex-column gap-2">
+                    <a href="{% url 'products:product_list_view' %}" class="btn btn-outline-primary">Manage Products</a>
+                    <a href="{% url 'suppliers:supplier_list_view' %}" class="btn btn-outline-primary">Manage Suppliers</a>
+                    <a href="{% url 'main:dashboard_view' %}" class="btn btn-outline-secondary">Main Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

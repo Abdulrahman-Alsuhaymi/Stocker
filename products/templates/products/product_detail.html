@@ -1,0 +1,99 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-start">
+    <h1>{{ product.name }}</h1>
+    {% if request.user.is_staff and perms.products.delete_product %}
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">delete</button>
+    {% endif %}
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="d-flex flex-column gap-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-1">
+                    {% if product.category %}
+                    <h6 class="cat p-1 ps-3 pe-3 rounded-pill text-white bg-secondary">{{ product.category.name }}</h6>
+                    {% endif %}
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    {% if product.current_stock <= product.min_stock_level %}
+                    <span class="badge bg-danger">Low Stock</span>
+                    {% elif product.current_stock > 0 %}
+                    <span class="badge bg-success">In Stock</span>
+                    {% else %}
+                    <span class="badge bg-warning">Out of Stock</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex gap-2">
+                    <h5 class="m-0 p-0">Stock: {{ product.current_stock }}</h5>
+                    <h5 class="m-0 p-0">Min: {{ product.min_stock_level }}</h5>
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    <h5 class="m-0 p-0">${{ product.selling_price }}</h5>
+                    <h6 class="m-0 p-0 text-muted">(Cost: ${{ product.cost_price }})</h6>
+                </div>
+            </div>
+
+            <img src="{{ product.image.url }}" class="product-detail-image" />
+
+            {% if request.user.is_staff and perms.products.change_product %}
+            <div class="d-flex justify-content-end gap-2">
+                <a href="{% url 'products:product_update_view' product.id %}" class="btn btn-primary">update</a>
+            </div>
+            {% endif %}
+            
+            <p>{{ product.description }}</p>
+
+            <div class="d-flex flex-column gap-2">
+                <p><strong>SKU:</strong> {{ product.sku }}</p>
+                {% if product.suppliers.all %}
+                <p><strong>Suppliers:</strong> 
+                    {% for supplier in product.suppliers.all %}
+                    <span class="badge bg-info me-1">{{ supplier.name }}</span>
+                    {% endfor %}
+                </p>
+                {% endif %}
+                {% if product.is_perishable %}
+                <p><strong>Perishable:</strong> Yes
+                    {% if product.expiry_date %}
+                    <span class="text-muted">(Expires: {{ product.expiry_date }})</span>
+                    {% endif %}
+                </p>
+                {% endif %}
+                <p><strong>Created:</strong> {{ product.created_at|date:"M d, Y" }}</p>
+                {% if product.created_by %}
+                <p><strong>Created By:</strong> {{ product.created_by.username }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Product</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are You sure you want to delete {{ product.name }} ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="{% url 'products:product_delete_view' product.id %}" class="btn btn-danger">delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'main/base.html' %}
+
+
+{% block content %}
+<div class="row row-cols-1 row-cols-md-2 align-items-center">
+    
+    <div class="col  pt-3">
+        <h1>Contact Us</h1>
+        <h5>Telephone: <a href="tel:+1234567890">+966555555</a></h5>
+        <h5>Email: <a href="mailto:info@stocker.com">info@stocker.com</a></h5>
+        <h5>Address:</h5>
+        <p>123 Street
+           City, 
+           Riyadh
+        </p>
+
+        <h2>Your Message</h2>
+        <form action="{% url 'main:contact_view' %}" method="post" class="d-flex flex-column gap-2">
+            {% csrf_token %}
+            <input type="text" class="form-control" placeholder="your name" name="name" required minlength="3"/>
+
+            <input type="text" class="form-control" placeholder="subject" name="subject" required minlength="3"/>
+
+            <textarea  class="form-control" placeholder="your message" name="message" ></textarea>
+
+            <input type="email" class="form-control" placeholder="your email" name="email" required minlength="3"/>
+
+            <input type="submit" value="send message" class="btn btn-primary"/>
+        </form>
+
+
+    </div>
+
+    <div class="col  pt-3 align-items-center h-100 ">
+
+        <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.2219901290355!2d-74.00369368400567!3d40.71312937933185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a23e28c1191%3A0x49f75d3281df052a!2s150%20Park%20Row%2C%20New%20York%2C%20NY%2010007%2C%20USA!5e0!3m2!1sen!2sus!4v1640995200000!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen=""></iframe>
+
+        
+    </div>
+
+</div>
+{% endblock %}

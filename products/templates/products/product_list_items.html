@@ -1,0 +1,46 @@
+<div class="row mt-2 row-cols-1 row-cols-md-3 g-4">
+
+    {% for product in products %}
+      <div class="col">
+          <div class="d-flex flex-column justify-content-start align-items-start h-100 p-4 shadow gap-2">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex gap-2">
+                    {% if product.category %}
+                    <h6 class="cat p-1 ps-3 pe-3 rounded-pill text-white bg-secondary">{{ product.category.name }}</h6>
+                    {% endif %}
+                </div>
+
+                <div class="d-flex align-items-center">
+                    {% if product.current_stock <= product.min_stock_level %}
+                    <span class="badge bg-danger">Low Stock</span>
+                    {% elif product.current_stock > 0 %}
+                    <span class="badge bg-success">In Stock</span>
+                    {% else %}
+                    <span class="badge bg-warning">Out of Stock</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <img src="{{ product.image.url }}" class="w-100 poster-thumb object-fit-cover"/>
+            
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <a href="{% url 'products:product_detail_view' product.id %}"><h3>{{ product.name }}</h3></a>
+                <div class="d-flex align-items-center gap-1">
+                    <h5 class="m-0 p-0">${{ product.selling_price }}</h5>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center gap-1">
+                    <h6 class="m-0 p-0">Stock: {{ product.current_stock }}</h6>
+                </div>
+                <h6 class="m-0 p-0">{{ product.created_at|date:"M d, Y" }}</h6>
+            </div>
+
+            <p class="text-muted small">{{ product.description|truncatewords:15 }}</p>
+
+          </div>
+      </div>
+    {% endfor %}
+  
+</div>

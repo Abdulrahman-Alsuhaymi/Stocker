@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Create New Supplier{% endblock %}
+
+{% block content %}
+
+<h1>Create Supplier</h1>
+
+<div class="row">
+    <div class="col-6">
+        <form class="d-flex flex-column gap-2" action="{% url 'suppliers:supplier_create_view' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <input type="text" placeholder="Supplier Name" name="name" class="form-control" required maxlength="255"/>
+            <input type="email" placeholder="Email" name="email" class="form-control"/>
+            <input type="text" placeholder="Phone" name="phone" class="form-control" maxlength="20"/>
+            <input type="url" placeholder="Website" name="website" class="form-control"/>
+            
+            <input type="text" placeholder="Country" name="country" class="form-control" maxlength="100"/>
+            
+            <input type="file" name="logo" class="form-control" accept="image/*"/>
+            
+            <select name="rating" class="form-select" required>
+                <option value="">Choose Rating</option>
+                <option value="1">Poor</option>
+                <option value="2">Fair</option>
+                <option value="3" selected>Good</option>
+                <option value="4">Very Good</option>
+                <option value="5">Excellent</option>
+            </select>
+            
+            <textarea placeholder="Notes" name="notes" class="form-control"></textarea>
+
+            <input type="submit" value="Create Supplier" class="btn btn-primary mt-4" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}

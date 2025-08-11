@@ -1,0 +1,96 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ supplier.name }}{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-start">
+    <h1>{{ supplier.name }}</h1>
+    {% if request.user.is_staff and perms.suppliers.delete_supplier %}
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">delete</button>
+    {% endif %}
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="d-flex flex-column gap-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-1">
+                    <img src="{{ supplier.logo.url }}" class="supplier-logo" />
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    {% if supplier.is_active %}
+                    <span class="badge bg-success">Active</span>
+                    {% else %}
+                    <span class="badge bg-secondary">Inactive</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex gap-2">
+                    {% if supplier.email %}
+                    <h5 class="m-0 p-0">Email: {{ supplier.email }}</h5>
+                    {% endif %}
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    <h5 class="m-0 p-0">{{ supplier.rating }}</h5>
+                    <span class="material-symbols-outlined">star</span>
+                </div>
+            </div>
+
+            {% if request.user.is_staff and perms.suppliers.change_supplier %}
+            <div class="d-flex justify-content-end gap-2">
+                <a href="{% url 'suppliers:supplier_update_view' supplier.id %}" class="btn btn-primary">update</a>
+            </div>
+            {% endif %}
+            
+            <div class="d-flex flex-column gap-2">
+                {% if supplier.email %}
+                <p><strong>Email:</strong> <a href="mailto:{{ supplier.email }}">{{ supplier.email }}</a></p>
+                {% endif %}
+                
+                {% if supplier.phone %}
+                <p><strong>Phone:</strong> <a href="tel:{{ supplier.phone }}">{{ supplier.phone }}</a></p>
+                {% endif %}
+                
+                {% if supplier.website %}
+                <p><strong>Website:</strong> <a href="{{ supplier.website }}" target="_blank">{{ supplier.website }}</a></p>
+                {% endif %}
+                
+                {% if supplier.country %}
+                <p><strong>Country:</strong> {{ supplier.country }}</p>
+                {% endif %}
+                
+                {% if supplier.notes %}
+                <p><strong>Notes:</strong> {{ supplier.notes }}</p>
+                {% endif %}
+                
+                <p><strong>Created:</strong> {{ supplier.created_at|date:"M d, Y" }}</p>
+                {% if supplier.created_by %}
+                <p><strong>Created By:</strong> {{ supplier.created_by.username }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Supplier</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are You sure you want to delete {{ supplier.name }} ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="{% url 'suppliers:supplier_delete_view' supplier.id %}" class="btn btn-danger">delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Profile for {{user.username}}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-2">
+
+        <img src="{{user.profile.avatar.url}}" class="w-100 rounded-circle" />
+        <h5>@{{user.username}}</h5>
+        {% if request.user == user %}
+        <a href="{% url 'accounts:update_user_profile' %}"><i class="bi bi-pencil-square"></i></a>
+        {% endif %}
+    </div>
+
+    <div class="col">
+
+        <div class="d-flex flex-column gap-3">
+            <div class="d-flex flex-column gap-2">
+                <h3>{{user.first_name}} {{user.last_name}}</h3>
+                <p><strong>Email:</strong> {{user.email}}</p>
+                {% if user.profile.phone %}
+                <p><strong>Phone:</strong> {{user.profile.phone}}</p>
+                {% endif %}
+                {% if user.profile.department %}
+                <p><strong>Department:</strong> {{user.profile.department}}</p>
+                {% endif %}
+                {% if user.profile.position %}
+                <p><strong>Position:</strong> {{user.profile.position}}</p>
+                {% endif %}
+                {% if user.profile.notification_email %}
+                <p><strong>Notification Email:</strong> {{user.profile.notification_email}}</p>
+                {% endif %}
+                {% if user.profile.is_manager %}
+                <p><strong>Manager:</strong> Yes</p>
+                {% endif %}
+                <p><strong>Member since:</strong> {{user.profile.created_at|date:"M d, Y"}}</p>
+            </div>
+
+            {% if request.user == user %}
+
+            <h3>My Products</h3>
+
+            <div class="row row-cols-3 gap-4">
+
+            {% for product in request.user.product_set.all %}
+
+                <div class="col d-flex flex-column gap-2 align-items-center p-4 shadow">
+                    <img src="{{product.image.url}}" class="w-100" />
+                    <a href="{% url 'products:product_detail_view' product.id %}"><h3>{{product.name}}</h3></a>
+                    <p class="text-muted">Stock: {{product.current_stock}}</p>
+                </div>
+
+            {% endfor %}
+
+            </div>
+
+            <h3>My Suppliers</h3>
+
+            <div class="row row-cols-3 gap-4">
+
+            {% for supplier in request.user.supplier_set.all %}
+
+                <div class="col d-flex flex-column gap-2 align-items-center p-4 shadow">
+                    <img src="{{supplier.logo.url}}" class="supplier-logo" />
+                    <a href="{% url 'suppliers:supplier_detail_view' supplier.id %}"><h3>{{supplier.name}}</h3></a>
+                    <p class="text-muted">Rating: {{supplier.rating}}</p>
+                </div>
+
+            {% endfor %}
+
+            </div>
+
+            {% endif %}
+
+        </div>
+        
+    </div>
+
+</div>
+
+{% endblock %}
